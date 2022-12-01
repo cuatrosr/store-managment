@@ -1,10 +1,12 @@
 package co.edu.icesi.store.utils;
 
 import io.jsonwebtoken.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -35,6 +37,21 @@ public class JWTParser {
         }
 
         return builder.compact();
+    }
+
+    public static UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+                    .build()
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+
+            String email = claims.getSubject();
+            return new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+        } catch (JwtException e) {
+            return null;
+        }
     }
 
     public static Claims decodeJWT(String jwt) {

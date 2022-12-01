@@ -21,6 +21,8 @@ package co.edu.icesi.store.security;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -36,6 +38,7 @@ public class SecurityContext implements Serializable {
     private UUID userId;
     private UUID roleId;
     private String token;
+    private Authentication authentication;
 
     public UUID getUserId() {
         return Optional.ofNullable(userId).orElseThrow();
@@ -46,5 +49,8 @@ public class SecurityContext implements Serializable {
     }
     public String getToken() {
         return token;
+    }
+    public Authentication getAuthentication() {
+        return authentication;
     }
 }

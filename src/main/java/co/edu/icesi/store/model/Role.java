@@ -8,18 +8,17 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Table(name = "user_role")
 @Entity
+@Table(name = "user_role")
 public class Role {
 
     @Id
     @Type(type="org.hibernate.type.PostgresUUIDType")
     private UUID roleId;
 
-    @Column(name = "role_name")
-    private String name;
+    private String roleName;
 
-    private String description;
+    private String roleDescription;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

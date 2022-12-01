@@ -7,17 +7,14 @@
 
     <changeSet id="33d4e9bc-7210-47c3-9617-c56ab7c0750d" author="david.montaño" failOnError="true">
 
-        <createTable tableName="users">
-            <column name="user_id" type="UUID">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="user_name" type="varchar(255)"/>
-            <column name="email" type="varchar(255)"/>
-            <column name="password" type="varchar(255)"/>
-            <column name="address" type="varchar(255)"/>
-            <column name="phone_number" type="varchar(255)"/>
+        <createTable tableName="role_permission">
             <column name="role_id" type="UUID">
-                <constraints nullable="false" references="user_role(role_id)" foreignKeyName="fk-user-role"/>
+                <constraints primaryKey="true" nullable="false" references="user_role(role_id)"
+                             foreignKeyName="fk-role-permission-role"/>
+            </column>
+            <column name="permission_id" type="UUID">
+                <constraints primaryKey="true" nullable="false" references="user_permission(permission_id)"
+                             foreignKeyName="fk-role-permission-permission"/>
             </column>
         </createTable>
     </changeSet>

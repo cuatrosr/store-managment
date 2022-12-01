@@ -7,25 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
-@Table(name = "`user`")
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
     @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID id;
+    private UUID userId;
 
-    private String name;
+    private String userName;
 
     private String email;
 
@@ -36,8 +33,12 @@ public class User {
 
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
     @PrePersist
     public void generateId(){
-        this.id = UUID.randomUUID();
+        this.userId = UUID.randomUUID();
     }
 }

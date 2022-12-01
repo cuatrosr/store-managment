@@ -33,6 +33,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -57,7 +58,7 @@ public class JWTAuthorizationTokenFilter extends OncePerRequestFilter {
 
     private static final String USER_ID_CLAIM_NAME = "userId";
 
-    private static final String[] excludedPaths = {"POST /login"};
+    private static final String[] excludedPaths = {"POST /account/login", "POST /account/register"};
 
     @Override
     protected void doFilterInternal(
@@ -71,6 +72,8 @@ public class JWTAuthorizationTokenFilter extends OncePerRequestFilter {
                 Claims claims = JWTParser.decodeJWT(jwtToken);
                 SecurityContext context = parseClaims(jwtToken, claims);
                 SecurityContextHolder.setUserContext(context);
+                UsernamePasswordAuthenticationToken usernamePAT = JWTParser.getAuthentication(jwtToken);
+                SecurityContextHolder.getContext().setAuthentication(usernamePAT);
                 filterChain.doFilter(request, response);
             } else {
                 createUnauthorizedFilter(new StoreException(HttpStatus.UNAUTHORIZED, new StoreError(ErrorConstants.CODE_UD_10, ErrorConstants.CODE_UD_10.getMessage())), response);
