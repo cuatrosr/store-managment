@@ -35,13 +35,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         JWTAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JWTAuthenticationTokenFilter();
         jwtAuthenticationTokenFilter.setAuthenticationManager(authManager(http));
-        jwtAuthenticationTokenFilter.setFilterProcessesUrl("/admin");
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin*").hasRole("admin")
+                .antMatchers("/admin*").permitAll()
                 .antMatchers("/anonymous*").anonymous()
                 .antMatchers("/account/login*").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().httpBasic()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
