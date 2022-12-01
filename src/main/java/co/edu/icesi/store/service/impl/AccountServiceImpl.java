@@ -5,7 +5,10 @@ import co.edu.icesi.store.dto.LoginDTO;
 import co.edu.icesi.store.dto.TokenDTO;
 import co.edu.icesi.store.error.exception.StoreError;
 import co.edu.icesi.store.error.exception.StoreException;
+import co.edu.icesi.store.model.Role;
 import co.edu.icesi.store.model.User;
+import co.edu.icesi.store.repository.PermissionRepository;
+import co.edu.icesi.store.repository.RoleRepository;
 import co.edu.icesi.store.repository.UserRepository;
 import co.edu.icesi.store.service.AccountService;
 import co.edu.icesi.store.utils.JWTParser;
@@ -18,6 +21,7 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -26,6 +30,7 @@ import java.util.stream.StreamSupport;
 public class AccountServiceImpl implements AccountService {
 
     public final UserRepository userRepository;
+    public final RoleRepository roleRepository;
     public PasswordEncoder passwordEncoder;
 
     @Override
@@ -45,8 +50,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User register(User user) {
+    public User register(User user, UUID roleId) {
         validateUniqueUser(user);
+        Role role = roleRepository.findById(roleId).orElseThrow();
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -56,7 +64,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public User edit(User user, UUID roleId) {
+        validateUniqueUser(user);
+        Role role = roleRepository.findById(roleId).orElseThrow();
+        user.setRole(role);
+        return userRepository.updateUserById(user.getUserId(), user.getUserName(), user.getEmail(), user.getAddress(), user.getPhoneNumber(), roleId);
+    }
+
+    @Override
     public List<User> getUsers() {
         return StreamSupport.stream(userRepository.findAll().spliterator(),false).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        return StreamSupport.stream(roleRepository.findAll().spliterator(),false).collect(Collectors.toList());
     }
 }

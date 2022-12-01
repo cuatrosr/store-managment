@@ -1,9 +1,6 @@
 package co.edu.icesi.store.api;
 
-import co.edu.icesi.store.dto.LoginDTO;
-import co.edu.icesi.store.dto.TokenDTO;
-import co.edu.icesi.store.dto.UserDTO;
-import co.edu.icesi.store.model.User;
+import co.edu.icesi.store.dto.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +15,14 @@ public interface AccountAPI {
     TokenDTO login(@RequestBody LoginDTO loginDTO);
 
     @PostMapping("/register")
-    UserDTO register(@RequestBody User user);
+    UserDTO register(@RequestBody UserCreateDTO user);
+
+    @PostMapping("/edit")
+    UserDTO edit(@RequestBody UserEditDTO user);
 
     @GetMapping
     List<UserDTO> getUsers();
+
+    @GetMapping("/roles")
+    List<RoleDTO> getRoles();
 }

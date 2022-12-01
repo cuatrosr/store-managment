@@ -1,9 +1,8 @@
 package co.edu.icesi.store.controller;
 
 import co.edu.icesi.store.api.AccountAPI;
-import co.edu.icesi.store.dto.LoginDTO;
-import co.edu.icesi.store.dto.TokenDTO;
-import co.edu.icesi.store.dto.UserDTO;
+import co.edu.icesi.store.dto.*;
+import co.edu.icesi.store.mapper.RoleMapper;
 import co.edu.icesi.store.mapper.UserMapper;
 import co.edu.icesi.store.model.User;
 import co.edu.icesi.store.service.AccountService;
@@ -21,6 +20,7 @@ public class AccountController implements AccountAPI {
 
     private final AccountService accountService;
     private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
 
     @Override
     public TokenDTO login(LoginDTO loginDTO) {
@@ -28,12 +28,22 @@ public class AccountController implements AccountAPI {
     }
 
     @Override
-    public UserDTO register(User user) {
-        return userMapper.fromUser(accountService.register(user));
+    public UserDTO register(UserCreateDTO user) {
+        return userMapper.fromUser(accountService.register(userMapper.fromDTO(user), user.getRoleId()));
+    }
+
+    @Override
+    public UserDTO edit(UserEditDTO user) {
+        return userMapper.fromUser(accountService.edit(userMapper.fromDTO(user), user.getRoleId()));
     }
 
     @Override
     public List<UserDTO> getUsers() {
         return accountService.getUsers().stream().map(userMapper::fromUser).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoleDTO> getRoles() {
+        return accountService.getRoles().stream().map(roleMapper::fromRole).collect(Collectors.toList());
     }
 }
