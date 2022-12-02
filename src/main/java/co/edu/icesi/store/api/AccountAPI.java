@@ -1,14 +1,12 @@
 package co.edu.icesi.store.api;
 
 import co.edu.icesi.store.dto.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/account")
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
 public interface AccountAPI {
 
     @PostMapping("/login")
