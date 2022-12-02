@@ -7,7 +7,6 @@ import co.edu.icesi.store.error.exception.StoreError;
 import co.edu.icesi.store.error.exception.StoreException;
 import co.edu.icesi.store.model.Role;
 import co.edu.icesi.store.model.User;
-import co.edu.icesi.store.repository.PermissionRepository;
 import co.edu.icesi.store.repository.RoleRepository;
 import co.edu.icesi.store.repository.UserRepository;
 import co.edu.icesi.store.service.AccountService;
@@ -29,9 +28,9 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    public final UserRepository userRepository;
-    public final RoleRepository roleRepository;
-    public PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public TokenDTO login(LoginDTO loginDTO) {
