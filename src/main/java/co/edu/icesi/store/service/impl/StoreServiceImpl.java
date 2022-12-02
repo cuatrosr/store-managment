@@ -7,15 +7,23 @@ import co.edu.icesi.store.service.StoreService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 @AllArgsConstructor
 public class StoreServiceImpl implements StoreService {
 
     private ItemRepository itemRepository;
 
-
     @Override
     public Item item(Item item) {
         return itemRepository.save(item);
+    }
+
+    @Override
+    public List<Item> getItems() {
+        return StreamSupport.stream(itemRepository.findAll().spliterator(),false).collect(Collectors.toList());
     }
 }

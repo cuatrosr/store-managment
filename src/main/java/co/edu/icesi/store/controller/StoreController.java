@@ -8,6 +8,9 @@ import co.edu.icesi.store.service.StoreService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @AllArgsConstructor
 public class StoreController implements StoreAPI {
@@ -18,5 +21,10 @@ public class StoreController implements StoreAPI {
     @Override
     public ItemDTO item(Item item) {
         return itemMapper.fromItem(storeService.item(item));
+    }
+
+    @Override
+    public List<ItemDTO> item() {
+        return storeService.getItems().stream().map(itemMapper::fromItem).collect(Collectors.toList());
     }
 }

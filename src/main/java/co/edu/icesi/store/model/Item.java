@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.util.UUID;
 
@@ -22,4 +23,9 @@ public class Item {
     private String itemDescription;
 
     private Double price;
+
+    @PrePersist
+    public void generateId(){
+        this.itemId = UUID.randomUUID();
+    }
 }
