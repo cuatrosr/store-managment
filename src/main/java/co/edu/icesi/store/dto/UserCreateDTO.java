@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateDTO {
-
-    private UUID userId;
 
     private String userName;
 

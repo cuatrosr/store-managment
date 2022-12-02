@@ -1,6 +1,8 @@
 package co.edu.icesi.store.api;
 
 import co.edu.icesi.store.dto.ItemDTO;
+import co.edu.icesi.store.dto.OrderCreateDTO;
+import co.edu.icesi.store.dto.OrderDTO;
 import co.edu.icesi.store.model.Item;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,4 +19,7 @@ public interface StoreAPI {
 
     @GetMapping("/item")
     List<ItemDTO> item();
+
+    @PostMapping("/order")
+    OrderDTO order(@RequestBody OrderCreateDTO order);
 }
